@@ -20,7 +20,7 @@ body{
 .container {
     padding: 20px;
     /* background-color: #656565; */
-    
+    color: rgb(189, 188, 188);
     text-align: center;
     font-family: 'Press Start 2P', sans-serif;
 
@@ -28,18 +28,23 @@ body{
   .gamerName {
     color: red;
   }
+  
   .bestplayersContainer {
-    display: inline-block; /* Définit le conteneur en tant qu'élément en ligne avec un bloc autour de son contenu */
-    float: right; /* Définit la position à droite de l'écran */
-    margin-right: 20px; /* Ajoute une marge de 20 pixels à droite pour espacer du bord de l'écran */
+    position: absolute;
+    top: 0;
+    right: 20px;
     color: rgb(194, 194, 194);
+    padding: 10px;
+    border: 3px solid rgb(0, 0, 0);
+    background-color: #322a86b6;
+    margin-top: 40px;
   }
   
-  .bestplayersClass {
-    border: 1px solid black; /* Définit une bordure de 1 pixel de largeur en noir */
-    padding: 10px; /* Ajoute une marge interne de 10 pixels pour espacer les éléments du cadre */
-    position:relative;
-  }
+  /* .bestplayersClass {
+    margin-top: 40px;
+    color: blueviolet;
+  } */
+  
   .playersClass{
     padding: 20px;
     background-color: #322a865f;
@@ -65,6 +70,8 @@ body{
     background-color: #322a865f;
     border: 1px solid #0b052853;
     border-radius: 3px;
+    color: rgb(189, 188, 188);
+
   }
   
 .button {
