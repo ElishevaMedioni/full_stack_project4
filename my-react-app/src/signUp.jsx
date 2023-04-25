@@ -29,19 +29,13 @@ class StartGame extends React.Component{
     this.state={
       player:this.props.players[0],
       players:this.props.players,
-      gameOver:false,
+      allPlayers:this.props.allPlayers,
       bestPlayers:[]
-    }
+    } 
 
-    // this.Plus_1=this.Plus_1.bind(this);
-    // this.Minus_1=this.Minus_1.bind(this);
-    // this.twice=this.twice.bind(this);
     this.BestPlayers=this.BestPlayers.bind(this);
     this.change_player=this.change_player.bind(this);
-    this.replay=this.replay.bind(this);
     // this.quit=this.quit.bind(this);
-
-    // this.randerNumber=this.randerNumber.bind(this);
 
   }
 
@@ -58,16 +52,23 @@ class StartGame extends React.Component{
   }
 
   handleClickPlus1 = (name) => {
-    let temp=false;
+    // let temp=false;
     const updatedPlayers = this.state.players.map((player) => {
       if (player.name === name) {
         let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score+1 };
         if(this.checkWin(updatedPlayer)){
           let ListSteps=player.steps.slice();
           ListSteps.push(updatedPlayer.currentStep);
-          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score + 1,win:true, steps:ListSteps};
-      // this.BestPlayers();
-          temp=true;
+          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score + 1,gameOver:true, steps:ListSteps};
+          const updatedAllPlayers = this.state.allPlayers.map((player) => {
+            if (player.name === name) {
+              return updatedPlayer
+            }else{
+              return player;
+            }
+          });
+          this.setState({ allPlayers: updatedAllPlayers });
+          // temp=true;
 
         }
         return updatedPlayer;
@@ -75,25 +76,31 @@ class StartGame extends React.Component{
         return player;
       }
     });
-    localStorage.setItem('Players', JSON.stringify(updatedPlayers));
     this.setState({ players: updatedPlayers });
-    if(temp){
-      this.BestPlayers();
-    }
+    // if(temp){
+    //   this.BestPlayers();
+    // }
     this.change_player();
   }
 
   handleClickMinus1 = (name) => {
-    let temp=false;
+    // let temp=false;
     const updatedPlayers = this.state.players.map((player) => {
       if (player.name === name) {
         let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score-1 };
         if(this.checkWin(updatedPlayer)){
           let ListSteps=player.steps.slice();
           ListSteps.push(updatedPlayer.currentStep);
-          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score - 1,win:true, steps:ListSteps};
-      // this.BestPlayers();
-          temp=true;
+          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score - 1,gameOver:true, steps:ListSteps};
+          const updatedAllPlayers = this.state.allPlayers.map((player) => {
+            if (player.name === name) {
+              return updatedPlayer
+            }else{
+              return player;
+            }
+          });
+          this.setState({ allPlayers: updatedAllPlayers });          
+          // temp=true;
 
         }
         return updatedPlayer;
@@ -101,32 +108,39 @@ class StartGame extends React.Component{
         return player;
       }
     });
-    localStorage.setItem('Players', JSON.stringify(updatedPlayers));
+    // localStorage.setItem('Players', JSON.stringify(updatedPlayers));
     this.setState({ players: updatedPlayers });
-    if(temp){
-      this.BestPlayers();
-    }
+    // if(temp){
+    //   this.BestPlayers();
+    // }
     this.change_player();
   }
 
   handleClickTwice = (name) => {
-    let temp=false;
+    // let temp=false;
     const updatedPlayers = this.state.players.map((player) => {
       if (player.name === name) {
         let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score*2 };
         if(this.checkWin(updatedPlayer)){
           let ListSteps=player.steps.slice();
           ListSteps.push(updatedPlayer.currentStep);
-          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score *2,win:true, steps:ListSteps};
-      // this.BestPlayers();
-          temp=true;
+          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score *2,gameOver:true, steps:ListSteps};
+          const updatedAllPlayers = this.state.allPlayers.map((player) => {
+            if (player.name === name) {
+              return updatedPlayer;
+            }else{
+              return player;
+            }
+          });
+          this.setState({ allPlayers: updatedAllPlayers });
+          // temp=true;
         }
         return updatedPlayer;
       } else {
         return player;
       }
     });
-    localStorage.setItem('Players', JSON.stringify(updatedPlayers));
+    // localStorage.setItem('Players', JSON.stringify(updatedPlayers));
     this.setState({ players: updatedPlayers });
     // if(temp){
     //   this.BestPlayers();
@@ -135,22 +149,30 @@ class StartGame extends React.Component{
   }
 
   handleClickDivide = (name) => {
-    let temp=false;
+    // let temp=false;
     const updatedPlayers = this.state.players.map((player) => {
       if (player.name === name) {
         let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score/2 };
         if(this.checkWin(updatedPlayer)){
           let ListSteps=player.steps.slice();
           ListSteps.push(updatedPlayer.currentStep);
-          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score /2,win:true, steps:ListSteps};
-          temp=true;
+          updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score /2,gameOver:true, steps:ListSteps};
+          const updatedAllPlayers = this.state.allPlayers.map((player) => {
+            if (player.name === name) {
+              return updatedPlayer
+            }else{
+              return player;
+            }
+          });
+          this.setState({ allPlayers: updatedAllPlayers });
+          // temp=true;
         }
         return updatedPlayer;
       } else {
         return player;
       }
     });
-    localStorage.setItem('Players', JSON.stringify(updatedPlayers));
+    // localStorage.setItem('Players', JSON.stringify(updatedPlayers));
     this.setState({ players: updatedPlayers });
     // if(temp){
     //   this.BestPlayers();
@@ -161,7 +183,7 @@ class StartGame extends React.Component{
 
   checkWin = (player) => {
     if(player.score===100){
-      this.setState({ gameOver: true });
+      // this.setState({ gameOver: true });
       // this.BestPlayers();
       // const sortedList = this.state.players.sort((a, b) => b.steps.length - a.steps.length);
       // const top3ObjectsWithLongestLists = sortedList.slice(0, 3);
@@ -170,15 +192,17 @@ class StartGame extends React.Component{
     }
 
   }
-  replay(event){
+  replay(name){
     const updatedPlayers = this.state.players.map((player) => {
-      // if (player.name === name) {
-        let updatedPlayer = { ...player,currentStep:0,score:Math.floor(Math.random() * 100) ,currentStep:0, win:false, };
+      if (player.name === name) {
+        let updatedPlayer = { ...player,currentStep:0,score:Math.floor(Math.random() * 100) ,currentStep:0, gameOver:false, };
         return updatedPlayer;
+      }
+      return player;
     });
 
-    localStorage.setItem('Players', JSON.stringify(updatedPlayers));
-    this.setState({ gameOver: false, player:this.state.players[0],players:updatedPlayers});
+    // localStorage.setItem('Players', JSON.stringify(updatedPlayers));
+    this.setState({players:updatedPlayers});
     this.BestPlayers();
   }
 
@@ -188,41 +212,36 @@ class StartGame extends React.Component{
     });
     localStorage.setItem('Players', JSON.stringify(updatedPlayers));
     this.setState({ players:updatedPlayers});
-    // this.setState({ gameOver: false, player:this.props.players[0]});
+    this.BestPlayers();
   }
 
   BestPlayers(){
-    const sortedList = this.state.players.sort((a, b) => b.steps.length - a.steps.length);
+    const sortedList = this.state.allPlayers.sort((a, b) => b.steps.length - a.steps.length);
     const top3ObjectsWithLongestLists = sortedList.slice(0, 3);
     this.setState({ bestPlayers : top3ObjectsWithLongestLists});
+    this.props.updateListAllPlayers(this.state.allPlayers);
   }
+
 
   render(){
     const currentPlayer=this.state.player;
     // const randomNumber=this.state.randomNumber;
     return(
       <div>
-        {/* <h1>List of players:</h1> */}
-        
 
-        {(this.state.gameOver)? (<div>
-              <button className="button" onClick={ this.replay}> replay</button></div>):(<div></div>)}
+        {this.state.bestPlayers.length === 0 ? (
+          <div>{this.BestPlayers()}</div>) : ( <div></div>)}
 
-        {this.state.bestPlayers.length !== 0 ? (
         <div className='bestplayersContainer'>
-          <div className='bestplayersClass'>
+          <div className='bestplayersClass' style={{color: 'red'}}>
             Best Players: <br/><br/>
+          </div>
             {this.state.bestPlayers.map((player, index) => (
               <div key={index}>
                 {player.name}<br/><br/>
               </div>
             ))}
-          </div>
         </div>
-      ) : (
-        <div></div>
-      )}
-
           
 
           <h1>List of players:</h1>
@@ -232,27 +251,26 @@ class StartGame extends React.Component{
             {/* document.getElementById('operation_button').disabled=true */}
             
 
-            {(this.state.gameOver)?((player.win)?(<p>{player.name} YOU WIN!!</p>):(<p>Sorry you lose. Too bad</p>)):<div/>}
+            {(player.gameOver)?(<p>{player.name} YOU WIN!!</p>):<div/>}
             {/* Gamer: <p className="gamerName">{player.name}</p> {currentPlayer.name===player.name?(<p>ENABLES</p>):(<p>NOT ENABLES</p>)} */}
            
             <div>
              Gamer:
               <p className="gamerName" style={{display: 'inline'}}>{player.name}</p>
-              {/* {currentPlayer.name===player.name?(<p style={{display: 'inline'}}> ENABLES</p>):(<p style={{display: 'inline'}}> NOT ENABLES</p>)} */}
             </div>
             {currentPlayer.name===player.name?(<p>ENABLES</p>):(<p>NOT ENABLES</p>)}
             <br/>
             Score:{player.score} <br/><br/>
             Steps:{player.currentStep}<br/>
             
-            <button className="button" id='operation_button' onClick={() => this.handleClickPlus1(player.name)} disabled={(currentPlayer.name!==player.name)||(this.state.gameOver===true) }>+1</button>
-            <button className="button" id='operation_button' onClick={() => this.handleClickMinus1(player.name)} disabled={(currentPlayer.name!==player.name)||(this.state.gameOver===true) }>-1</button>
-            <button className="button" id='operation_button' onClick={() => this.handleClickTwice(player.name)} disabled={(currentPlayer.name!==player.name)||(this.state.gameOver===true) }>*2</button>
-            <button className="button" id='operation_button' onClick={() => this.handleClickDivide(player.name)} disabled={(currentPlayer.name!==player.name)||(this.state.gameOver===true) }>/2</button><br/>
+            <button className="button" id='operation_button' onClick={() => this.handleClickPlus1(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>+1</button>
+            <button className="button" id='operation_button' onClick={() => this.handleClickMinus1(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>-1</button>
+            <button className="button" id='operation_button' onClick={() => this.handleClickTwice(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>*2</button>
+            <button className="button" id='operation_button' onClick={() => this.handleClickDivide(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>/2</button><br/>
           
-            {(this.state.gameOver)? (<div>
-              {/* <button onClick={ this.replay}> replay</button> */}
+            {(player.gameOver)? (<div>
               <button className="button" onClick={() => this.quit(player.name)}> quit</button>
+              <button className="button" onClick={() => this.replay(player.name)}> replay</button>
             </div>):(<div></div>)}
 
             {player.name}'s scores:{player.steps.join(', ')} <br/>
@@ -260,10 +278,6 @@ class StartGame extends React.Component{
   
         ))}
          
-            
-               
-            
-
         
       </div>
     );
@@ -335,7 +349,8 @@ class Link extends React.Component {
     super(props);
     this.state={
       InGame:false,
-      listPlayers:[]
+      listPlayers:[],
+      listAllPlayers:[],
     }
     this.StartGame=this.StartGame.bind(this);
     this.NewGame=this.NewGame.bind(this);
@@ -343,8 +358,27 @@ class Link extends React.Component {
 
   }
 
-  updateListPlayers(listPlayers) {
+  updateListPlayers(listPlayers,listAllPlayers) {
     this.setState({ listPlayers: listPlayers });
+    this.setState({ listAllPlayers: listAllPlayers });
+
+  }
+
+  updateListAllPlayers(myList) {
+    let myListAllPlayers = this.state.listAllPlayers.slice();
+
+    for (let i = 0; i < myListAllPlayers.length; i++) {
+      for (let j = 0; j < myList.length; j++) {
+        if (myListAllPlayers[i].name === myList[j].name) {
+          myListAllPlayers[i] = myList[j];
+          break;
+        }
+        else if (j === myList.length - 1) {
+          myListAllPlayers.push(myList[j]);
+        }
+     }
+    }
+    this.setState({ listAllPlayers: myList });
   }
 
   StartGame(event){
@@ -365,8 +399,9 @@ class Link extends React.Component {
     if(this.state.InGame===false){
       return(
         <div className="container">
+          Get To 100<br/><br/>
           <button className='button' onClick={this.StartGame}>Start Game</button>
-          <Get100 updateListPlayers={this.updateListPlayers}/>
+          <Get100 updateListPlayers={this.updateListPlayers} allPlayers={this.state.listAllPlayers}/>
 
         </div>
       );
@@ -375,7 +410,7 @@ class Link extends React.Component {
       return(
         <div className="container">
           <button className='button' onClick={this.NewGame}>New Game</button>
-          <StartGame players={this.state.listPlayers}/>
+          <StartGame players={this.state.listPlayers} allPlayers={this.state.listAllPlayers} updateListAllPlayers={this.updateListAllPlayers.bind(this)}/>
           {/* <StartGame players={localStorage.getItem("Players") ? JSON.parse(localStorage.getItem("Players")) : []}/> */}
         </div>
       );
@@ -393,6 +428,7 @@ class Get100 extends React.Component {
     this.state={
       name:"",
       listPlayers:[],
+      listAllPlayers:this.props.allPlayers,
       InGame:false
     }
     this.setname=this.setname.bind(this);
@@ -410,6 +446,8 @@ class Get100 extends React.Component {
     // let listPlayers = localStorage.getItem("Players")?JSON.parse(localStorage.getItem("Players")):[];
     // let listPlayers=[];
     let myList = this.state.listPlayers.slice();
+    let myListAllPlayers = this.state.listAllPlayers.slice();
+
     // const objectExist = listPlayers.some((o) => o.name === this.state.name);
     // if(objectExist){
     //   objectExist.currentStep=0;
@@ -423,21 +461,22 @@ class Get100 extends React.Component {
       name:this.state.name,
       score:Math.floor(Math.random() * 100),
       currentStep:0,
-      win:false,
+      gameOver:false,
       steps:[]
     };
       
     // listPlayers.push(PlayerObj);
-    if (myList.some(player => player.name === PlayerObj.name)){
+    if (myListAllPlayers.some(player => player.name === PlayerObj.name)){
       alert("this name already exist");
     }
     else{
+      myListAllPlayers.push(PlayerObj);
       myList.push(PlayerObj);
     }
     
     //}
-    this.setState({ listPlayers: myList, name: "" });
-    this.props.updateListPlayers(myList);
+    this.setState({ listPlayers: myList,listAllPlayers:myListAllPlayers, name: "" });
+    this.props.updateListPlayers(myList,myListAllPlayers);
     // let totalPlayers=JSON.parse(localStorage.getItem('Players'));
     // localStorage.setItem('Players', JSON.stringify(listPlayers));
   };
@@ -447,9 +486,13 @@ class Get100 extends React.Component {
     let updatedPlayers =this.state.listPlayers.filter((player) => {
       return player.name !== namePlayer;
     });
+    let updatedAllPlayers =this.state.listAllPlayers.filter((player) => {
+      return player.name !== namePlayer;
+    });
     localStorage.setItem('Players', JSON.stringify(updatedPlayers));
-    this.setState({ listPlayers:updatedPlayers});
-    this.props.updateListPlayers(updatedPlayers);
+    this.setState({ listPlayers:updatedPlayers,listAllPlayers:updatedAllPlayers});
+    // this.setState({ listPlayers:updatedPlayers});
+    this.props.updateListPlayers(updatedPlayers,updatedAllPlayers);
   }
 
   render() {
