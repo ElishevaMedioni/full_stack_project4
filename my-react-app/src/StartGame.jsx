@@ -5,21 +5,19 @@ class StartGame extends React.Component{
       super(props);
   
       this.state={
-        player:JSON.parse(localStorage.getItem("Players"))[0],
-        players:this.props.players
-      }
+        player:this.props.players[0],
+        players:this.props.players,
+        allPlayers:this.props.allPlayers,
+        bestPlayers:[]
+      } 
   
-      this.Plus_1=this.Plus_1.bind(this);
-      this.Minus_1=this.Minus_1.bind(this);
-      this.twice=this.twice.bind(this);
-      this.divide_by_2=this.divide_by_2.bind(this);
+      this.BestPlayers=this.BestPlayers.bind(this);
       this.change_player=this.change_player.bind(this);
-      // this.randerNumber=this.randerNumber.bind(this);
   
     }
   
     change_player(event){
-      const PlayersList=this.props.players;
+      const PlayersList=this.state.players;
       let idx =PlayersList.findIndex(player => player.name=== this.state.player.name);;
       if(PlayersList[idx+1]){
         this.setState({ player: PlayersList[idx+1] });
@@ -30,76 +28,202 @@ class StartGame extends React.Component{
       }
     }
   
-    Plus_1(event){
-      this.change_player();
-    }
-  
-    Minus_1(event){
-      this.change_player();
-    }
-  
-    twice(event){
-      this.change_player();
-    }
-  
-    divide_by_2(event){
-    //   const PlayersList=this.props.players;
-    //   let idx =PlayersList.findIndex(player => player.name=== this.state.player.name);
-    //   const player=this.state.player;
-    //   let number=player.number;
-    //   const countStep=player.currentStep;
-    //   const PlayerObj={
-    //     name:this.state.name,
-    //     score:number/2,
-    //     currentStep:countStep+1,
-    //     steps:[]
-    //   };
-    //  console.log(PlayerObj);
-    //  console.log(PlayersList[idx]);
-  
-    //   PlayersList[idx]=PlayerObj;
-    //  console.log(PlayersList[idx]);
-  
-     
-    //   localStorage.setItem('Players', JSON.stringify(PlayersList));
-    //   this.change_player();
-    }
-  
-    handleClick = (name) => {
+    handleClickPlus1 = (name) => {
       const updatedPlayers = this.state.players.map((player) => {
         if (player.name === name) {
-          this.setState({ player: player });
-          return { ...player, score: player.score + 1 };
+          let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score+1 };
+          if(this.checkWin(updatedPlayer)){
+            let ListSteps=player.steps.slice();
+            ListSteps.push(updatedPlayer.currentStep);
+            updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score + 1,gameOver:true, steps:ListSteps};
+            const updatedAllPlayers = this.state.allPlayers.map((player) => {
+              if (player.name === name) {
+                return updatedPlayer
+              }else{
+                return player;
+              }
+            });
+            this.setState({ allPlayers: updatedAllPlayers });
+  
+          }
+          return updatedPlayer;
         } else {
           return player;
         }
       });
-      localStorage.setItem('Players', JSON.stringify(updatedPlayers));
+      this.setState({ players: updatedPlayers });
+     
+      this.change_player();
+    }
+  
+    handleClickMinus1 = (name) => {
+      const updatedPlayers = this.state.players.map((player) => {
+        if (player.name === name) {
+          let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score-1 };
+          if(this.checkWin(updatedPlayer)){
+            let ListSteps=player.steps.slice();
+            ListSteps.push(updatedPlayer.currentStep);
+            updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score - 1,gameOver:true, steps:ListSteps};
+            const updatedAllPlayers = this.state.allPlayers.map((player) => {
+              if (player.name === name) {
+                return updatedPlayer
+              }else{
+                return player;
+              }
+            });
+            this.setState({ allPlayers: updatedAllPlayers });          
+  
+          }
+          return updatedPlayer;
+        } else {
+          return player;
+        }
+      });
       this.setState({ players: updatedPlayers });
       this.change_player();
     }
   
+    handleClickTwice = (name) => {
+      const updatedPlayers = this.state.players.map((player) => {
+        if (player.name === name) {
+          let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score*2 };
+          if(this.checkWin(updatedPlayer)){
+            let ListSteps=player.steps.slice();
+            ListSteps.push(updatedPlayer.currentStep);
+            updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score *2,gameOver:true, steps:ListSteps};
+            const updatedAllPlayers = this.state.allPlayers.map((player) => {
+              if (player.name === name) {
+                return updatedPlayer;
+              }else{
+                return player;
+              }
+            });
+            this.setState({ allPlayers: updatedAllPlayers });
+          }
+          return updatedPlayer;
+        } else {
+          return player;
+        }
+      });
+      this.setState({ players: updatedPlayers });
+      this.change_player();
+    }
+  
+    handleClickDivide = (name) => {
+      const updatedPlayers = this.state.players.map((player) => {
+        if (player.name === name) {
+          let updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score/2 };
+          if(this.checkWin(updatedPlayer)){
+            let ListSteps=player.steps.slice();
+            ListSteps.push(updatedPlayer.currentStep);
+            updatedPlayer = { ...player,currentStep:player.currentStep+1, score: player.score /2,gameOver:true, steps:ListSteps};
+            const updatedAllPlayers = this.state.allPlayers.map((player) => {
+              if (player.name === name) {
+                return updatedPlayer
+              }else{
+                return player;
+              }
+            });
+            this.setState({ allPlayers: updatedAllPlayers });
+            // temp=true;
+          }
+          return updatedPlayer;
+        } else {
+          return player;
+        }
+      });
+      this.setState({ players: updatedPlayers });
+      this.change_player();
+    }
+  
+    checkWin = (player) => {
+      if(player.score===100){
+         return true;
+      }
+  
+    }
+    replay(name){
+      const updatedPlayers = this.state.players.map((player) => {
+        if (player.name === name) {
+          let updatedPlayer = { ...player,currentStep:0,score:Math.floor(Math.random() * 100) ,currentStep:0, gameOver:false, };
+          return updatedPlayer;
+        }
+        return player;
+      });
+  
+      this.setState({players:updatedPlayers});
+      this.BestPlayers();
+    }
+  
+    quit(name){
+      let updatedPlayers =this.state.players.filter((player) => {
+        return player.name !== name;
+      });
+      localStorage.setItem('Players', JSON.stringify(updatedPlayers));
+      this.setState({ players:updatedPlayers});
+      this.BestPlayers();
+    }
+  
+    BestPlayers(){
+      const sortedList = this.state.allPlayers.sort((a, b) => b.steps.length - a.steps.length);
+      const top3ObjectsWithLongestLists = sortedList.slice(0, 3);
+      this.setState({ bestPlayers : top3ObjectsWithLongestLists});
+      this.props.updateListAllPlayers(this.state.allPlayers);
+    }
+  
+  
     render(){
       const currentPlayer=this.state.player;
-      // const randomNumber=this.state.randomNumber;
       return(
         <div>
-          <h1>List of players:</h1>
-          {this.props.players.map((player, index) => (
-            <div key={index}>
-              
-              {/* document.getElementById('operation_button').disabled=true */}
-              Gamer: {player.name} {currentPlayer.name===player.name?(<p>ENABLES</p>):(<p>NOT ENABLES</p>)}
-              Score:{this.state.player.score} <br/>
-              Steps:{player.steps}<br/>
-              <button id='operation_button' onClick={this.Plus_1} disabled={currentPlayer.name!==player.name}>+1</button>
-              <button id='operation_button' onClick={this.Minus_1} disabled={currentPlayer.name!==player.name}>-1</button>
-              <button id='operation_button' onClick={this.twice} disabled={currentPlayer.name!==player.name}>*2</button>
-              <button id='operation_button' onClick={() => this.handleClick(player.name)} disabled={currentPlayer.name!==player.name}>/2</button><br/>
-             
-              ----------------------------------------------
+  
+          {this.state.bestPlayers.length === 0 ? (
+            <div>{this.BestPlayers()}</div>) : ( <div></div>)}
+  
+          <div className='bestplayersContainer'>
+            <div className='bestplayersClass' style={{color: 'red'}}>
+              Best Players: <br/><br/>
             </div>
+              {this.state.bestPlayers.map((player, index) => (
+                <div key={index}>
+                  {player.name}<br/><br/>
+                </div>
+              ))}
+          </div>
+            
+  
+            <h1>List of players:</h1>
+          {this.state.players.map((player, index) => (
+            <div className="playersClass" key={index}>
+     
+  
+              {(player.gameOver)?(<p>{player.name} YOU WIN!!</p>):<div/>}
+             
+              <div>
+               Gamer:
+                <p className="gamerName" style={{display: 'inline'}}>{player.name}</p>
+              </div>
+              {currentPlayer.name===player.name?(<p>ENABLES</p>):(<p>NOT ENABLES</p>)}
+              <br/>
+              Score:{player.score} <br/><br/>
+              Steps:{player.currentStep}<br/>
+              
+              <button className="button" id='operation_button' onClick={() => this.handleClickPlus1(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>+1</button>
+              <button className="button" id='operation_button' onClick={() => this.handleClickMinus1(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>-1</button>
+              <button className="button" id='operation_button' onClick={() => this.handleClickTwice(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>*2</button>
+              <button className="button" id='operation_button' onClick={() => this.handleClickDivide(player.name)} disabled={(currentPlayer.name!==player.name)||(player.gameOver===true) }>/2</button><br/>
+            
+              {(player.gameOver)? (<div>
+                <button className="button" onClick={() => this.quit(player.name)}> quit</button>
+                <button className="button" onClick={() => this.replay(player.name)}> replay</button>
+              </div>):(<div></div>)}
+  
+              {player.name}'s scores:{player.steps.join(', ')} <br/>
+            </div>
+    
           ))}
+           
+          
         </div>
       );
     }
